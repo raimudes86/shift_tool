@@ -1,8 +1,8 @@
 "use client";
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 // 時間選択肢
-const startTimeOptions = ['10', '11', '17', '18', '18.5'];
+const startTimeOptions = ['10', '17', '11', '18', '18.5'];
 const endTimeOptions = ['15', 'L', '14', '14.5'];
 
 const ShiftPage = () => {
@@ -26,7 +26,7 @@ const ShiftPage = () => {
   };
 
   // ページロード時と、年、月、半期が変更されたときに日付を更新
-  useState(() => {
+  useEffect(() => {
     updateDays();
   }, [year, month, half]);
 
@@ -75,8 +75,8 @@ const ShiftPage = () => {
         </div>
       </div>
 
-      {/* 日付ごとのシフト設定 */}
-      <table className="min-w-full border-collapse border border-gray-300">
+       {/* 日付ごとのシフト設定 */}
+       <table className="min-w-full border-collapse border border-gray-300">
         <thead>
           <tr>
             <th className="border border-gray-300 p-2">日付</th>
@@ -89,31 +89,63 @@ const ShiftPage = () => {
             <tr key={day}>
               <td className="border border-gray-300 p-2">{day}日</td>
               <td className="border border-gray-300 p-2">
+                {/* 最初に固定された2つの選択肢 */}
+                <button
+                  onClick={() => handleShiftChange(index, 'start', '10')}
+                  className={`p-2 border ${shifts[index].start === '10' ? 'bg-blue-500 text-white' : 'border-gray-300'}`}
+                >
+                  10
+                </button>
+                <button
+                  onClick={() => handleShiftChange(index, 'start', '17')}
+                  className={`p-2 border ${shifts[index].start === '17' ? 'bg-blue-500 text-white' : 'border-gray-300'}`}
+                >
+                  17
+                </button>
+                {/* その他の選択肢をプルダウンで表示 */}
                 <select
                   value={shifts[index].start}
                   onChange={(e) => handleShiftChange(index, 'start', e.target.value)}
                   className="p-2 border border-gray-300 rounded"
                 >
-                  <option value="">選択してください</option>
-                  {startTimeOptions.map((time) => (
-                    <option key={time} value={time}>
-                      {time}
-                    </option>
-                  ))}
+                  <option value="">他の時間を選択</option>
+                  {startTimeOptions
+                    .filter((time) => time !== '10' && time !== '17') // 既にボタンで表示されているものは除く
+                    .map((time) => (
+                      <option key={time} value={time}>
+                        {time}
+                      </option>
+                    ))}
                 </select>
               </td>
               <td className="border border-gray-300 p-2">
+                {/* 終了時間も同様に設定 */}
+                <button
+                  onClick={() => handleShiftChange(index, 'end', '15')}
+                  className={`p-2 border ${shifts[index].end === '15' ? 'bg-blue-500 text-white' : 'border-gray-300'}`}
+                >
+                  15
+                </button>
+                <button
+                  onClick={() => handleShiftChange(index, 'end', 'L')}
+                  className={`p-2 border ${shifts[index].end === 'L' ? 'bg-blue-500 text-white' : 'border-gray-300'}`}
+                >
+                  L
+                </button>
+                {/* その他の選択肢をプルダウンで表示 */}
                 <select
                   value={shifts[index].end}
                   onChange={(e) => handleShiftChange(index, 'end', e.target.value)}
                   className="p-2 border border-gray-300 rounded"
                 >
-                  <option value="">選択してください</option>
-                  {endTimeOptions.map((time) => (
-                    <option key={time} value={time}>
-                      {time}
-                    </option>
-                  ))}
+                  <option value="">他の時間を選択</option>
+                  {endTimeOptions
+                    .filter((time) => time !== '15' && time !== 'L') // 既にボタンで表示されているものは除く
+                    .map((time) => (
+                      <option key={time} value={time}>
+                        {time}
+                      </option>
+                    ))}
                 </select>
               </td>
             </tr>
