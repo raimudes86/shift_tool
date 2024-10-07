@@ -2,8 +2,8 @@
 import { useState, useEffect } from 'react';
 
 // 時間選択肢
-const startTimeOptions = ['10', '17', '11', '18', '18.5'];
-const endTimeOptions = ['15', 'L', '14', '14.5'];
+const startTimeOptions = ['10', '17', '11', '18', '18.5','9','10.5','11.5'];
+const endTimeOptions = ['15', 'L', '14', '14.5','17'];
 
 const ShiftPage = () => {
   const [year, setYear] = useState('2024');
@@ -45,6 +45,31 @@ const ShiftPage = () => {
       .join('\n');
   };
 
+  // 年の選択肢を2024年から2050年まで生成
+  const generateYearOptions = () => {
+    const years = [];
+    for (let i = 2024; i <= 2050; i++) {
+      years.push(i);
+    }
+    return years;
+  };
+
+  // 月の選択肢
+  const months = [
+    { value: '01', label: '1月' },
+    { value: '02', label: '2月' },
+    { value: '03', label: '3月' },
+    { value: '04', label: '4月' },
+    { value: '05', label: '5月' },
+    { value: '06', label: '6月' },
+    { value: '07', label: '7月' },
+    { value: '08', label: '8月' },
+    { value: '09', label: '9月' },
+    { value: '10', label: '10月' },
+    { value: '11', label: '11月' },
+    { value: '12', label: '12月' },
+  ];
+
   return (
     <div className="p-4">
       <h1 className="text-2xl font-bold mb-4">シフト作成</h1>
@@ -54,16 +79,21 @@ const ShiftPage = () => {
         <div>
           <label>年度</label>
           <select value={year} onChange={(e) => setYear(e.target.value)} className="p-2 border border-gray-300 rounded">
-            <option value="2023">2023</option>
-            <option value="2024">2024</option>
+            {generateYearOptions().map((year) => (
+              <option key={year} value={year}>
+                {year}
+              </option>
+            ))}
           </select>
         </div>
         <div>
           <label>月</label>
           <select value={month} onChange={(e) => setMonth(e.target.value)} className="p-2 border border-gray-300 rounded">
-            <option value="10">10月</option>
-            <option value="11">11月</option>
-            {/* 必要な月を追加 */}
+            {months.map((month) => (
+              <option key={month.value} value={month.value}>
+                {month.label}
+              </option>
+            ))}
           </select>
         </div>
         <div>
@@ -75,8 +105,8 @@ const ShiftPage = () => {
         </div>
       </div>
 
-       {/* 日付ごとのシフト設定 */}
-       <table className="min-w-full border-collapse border border-gray-300">
+      {/* 日付ごとのシフト設定 */}
+      <table className="min-w-full border-collapse border border-gray-300">
         <thead>
           <tr>
             <th className="border border-gray-300 p-2">日付</th>
@@ -92,13 +122,13 @@ const ShiftPage = () => {
                 {/* 最初に固定された2つの選択肢 */}
                 <button
                   onClick={() => handleShiftChange(index, 'start', '10')}
-                  className={`p-2 border ${shifts[index].start === '10' ? 'bg-blue-500 text-white' : 'border-gray-300'}`}
+                  className={`p-2 border ${shifts[index].start === '10' ? 'bg-blue-500 text-white' : 'border-gray-300' } rounded mt-5`}
                 >
                   10
                 </button>
                 <button
                   onClick={() => handleShiftChange(index, 'start', '17')}
-                  className={`p-2 border ${shifts[index].start === '17' ? 'bg-blue-500 text-white' : 'border-gray-300'}`}
+                  className={`p-2 border ${shifts[index].start === '17' ? 'bg-blue-500 text-white' : 'border-gray-300'} rounded`}
                 >
                   17
                 </button>
@@ -122,13 +152,13 @@ const ShiftPage = () => {
                 {/* 終了時間も同様に設定 */}
                 <button
                   onClick={() => handleShiftChange(index, 'end', '15')}
-                  className={`p-2 border ${shifts[index].end === '15' ? 'bg-blue-500 text-white' : 'border-gray-300'}`}
+                  className={`p-2 border ${shifts[index].end === '15' ? 'bg-blue-500 text-white' : 'border-gray-300'} rounded`}
                 >
                   15
                 </button>
                 <button
                   onClick={() => handleShiftChange(index, 'end', 'L')}
-                  className={`p-2 border ${shifts[index].end === 'L' ? 'bg-blue-500 text-white' : 'border-gray-300'}`}
+                  className={`p-2 border ${shifts[index].end === 'L' ? 'bg-blue-500 text-white' : 'border-gray-300'} rounded`}
                 >
                   L
                 </button>
