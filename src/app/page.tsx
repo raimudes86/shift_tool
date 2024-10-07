@@ -76,7 +76,7 @@ const ShiftPage = () => {
 
       {/* 年度、月、前半・後半の選択 */}
       <div className="flex space-x-4 mb-4">
-        <div>
+        <div className="flex flex-col">
           <label>年度</label>
           <select value={year} onChange={(e) => setYear(e.target.value)} className="p-2 border border-gray-300 rounded">
             {generateYearOptions().map((year) => (
@@ -86,7 +86,7 @@ const ShiftPage = () => {
             ))}
           </select>
         </div>
-        <div>
+        <div className="flex flex-col">
           <label>月</label>
           <select value={month} onChange={(e) => setMonth(e.target.value)} className="p-2 border border-gray-300 rounded">
             {months.map((month) => (
@@ -96,7 +96,7 @@ const ShiftPage = () => {
             ))}
           </select>
         </div>
-        <div>
+        <div className="flex flex-col">
           <label>前半/後半</label>
           <select value={half} onChange={(e) => setHalf(e.target.value)} className="p-2 border border-gray-300 rounded">
             <option value="前半">前半</option>
@@ -122,13 +122,13 @@ const ShiftPage = () => {
                 {/* 最初に固定された2つの選択肢 */}
                 <button
                   onClick={() => handleShiftChange(index, 'start', '10')}
-                  className={`p-2 border ${shifts[index].start === '10' ? 'bg-blue-500 text-white' : 'border-gray-300' } rounded mt-5`}
+                  className={`p-2 border ${shifts[index].start === '10' ? 'bg-blue-500 text-white' : 'border-gray-300' } rounded mr-2`}
                 >
                   10
                 </button>
                 <button
                   onClick={() => handleShiftChange(index, 'start', '17')}
-                  className={`p-2 border ${shifts[index].start === '17' ? 'bg-blue-500 text-white' : 'border-gray-300'} rounded`}
+                  className={`p-2 border ${shifts[index].start === '17' ? 'bg-blue-500 text-white' : 'border-gray-300'} rounded mr-2`}
                 >
                   17
                 </button>
@@ -152,13 +152,13 @@ const ShiftPage = () => {
                 {/* 終了時間も同様に設定 */}
                 <button
                   onClick={() => handleShiftChange(index, 'end', '15')}
-                  className={`p-2 border ${shifts[index].end === '15' ? 'bg-blue-500 text-white' : 'border-gray-300'} rounded`}
+                  className={`p-2 border ${shifts[index].end === '15' ? 'bg-blue-500 text-white' : 'border-gray-300'} rounded mr-2`}
                 >
                   15
                 </button>
                 <button
                   onClick={() => handleShiftChange(index, 'end', 'L')}
-                  className={`p-2 border ${shifts[index].end === 'L' ? 'bg-blue-500 text-white' : 'border-gray-300'} rounded`}
+                  className={`p-2 border ${shifts[index].end === 'L' ? 'bg-blue-500 text-white' : 'border-gray-300'} rounded mr-2`}
                 >
                   L
                 </button>
