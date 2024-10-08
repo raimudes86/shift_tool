@@ -5,12 +5,24 @@ import { useState, useEffect } from 'react';
 const startTimeOptions = ['10', '17', '11', '18', '18.5','9','10.5','11.5'];
 const endTimeOptions = ['15', 'L', '14', '14.5','17'];
 
+const ShiftButton = ({ label, selected, onClick }: { label: string, selected: boolean, onClick: () => void }) => {
+  return (
+    <button
+      onClick={onClick}
+      className={`p-2 border ${selected ? 'bg-blue-500 text-white' : 'border-gray-300'} rounded mr-2`}
+    >
+      {label}
+    </button>
+  );
+};
+
+
 const ShiftPage = () => {
   const [year, setYear] = useState('2024');
   const [month, setMonth] = useState('10');
   const [half, setHalf] = useState('前半');
   const [days, setDays] = useState<string[]>([]);
-  const [shifts, setShifts] = useState<{ day: string, start: string, end: string }[]>([]);
+  const [shifts, setShifts] = useState<{ day: string, auto: string, start: string, end: string }[]>([]);
 
   // 年度・月が変更されたときに、日付を取得
   const updateDays = () => {
@@ -21,7 +33,7 @@ const ShiftPage = () => {
     setDays(newDays);
 
     // 初期のシフトデータも更新
-    const initialShifts = newDays.map(day => ({ day, start: '', end: '' }));
+    const initialShifts = newDays.map(day => ({ day, auto: '', start: '', end: '' }));
     setShifts(initialShifts);
   };
 
@@ -31,8 +43,9 @@ const ShiftPage = () => {
   }, [year, month, half]);
 
   // シフトの時間を変更する
-  const handleShiftChange = (index: number, type: 'start' | 'end', value: string) => {
+  const handleShiftChange = (index: number, type: 'start' | 'end' | 'auto', value: string) => {
     const updatedShifts = [...shifts];
+    updatedShifts[index]['auto'] = '';
     updatedShifts[index][type] = value;
     setShifts(updatedShifts);
   };
@@ -110,6 +123,7 @@ const ShiftPage = () => {
         <thead>
           <tr>
             <th className="border border-gray-300 p-2">日付</th>
+            <th className="border border-gray-300 p-2">自動</th>
             <th className="border border-gray-300 p-2">開始時間</th>
             <th className="border border-gray-300 p-2">終了時間</th>
           </tr>
@@ -119,19 +133,46 @@ const ShiftPage = () => {
             <tr key={day}>
               <td className="border border-gray-300 p-2">{day}日</td>
               <td className="border border-gray-300 p-2">
+              <ShiftButton
+                  label="昼"
+                  selected={shifts[index].auto === '昼'}
+                  onClick={() => {
+                    handleShiftChange(index, 'start','10');
+                    handleShiftChange(index, 'end', '15');
+                    handleShiftChange(index, 'auto', '昼');
+                  }}
+                />
+                <ShiftButton
+                  label="夜"
+                  selected={shifts[index].auto === '夜'}
+                  onClick={() => {
+                    handleShiftChange(index, 'start','17');
+                    handleShiftChange(index, 'end', 'L');
+                    handleShiftChange(index, 'auto', '夜');
+                  }}
+                />
+                <ShiftButton
+                  label="通し"
+                  selected={shifts[index].auto === '通し'}
+                  onClick={() => {
+                    handleShiftChange(index, 'start','10');
+                    handleShiftChange(index, 'end', 'L');
+                    handleShiftChange(index, 'auto', '通し');
+                  }}
+                />
+              </td>
+              <td className="border border-gray-300 p-2">
                 {/* 最初に固定された2つの選択肢 */}
-                <button
-                  onClick={() => handleShiftChange(index, 'start', '10')}
-                  className={`p-2 border ${shifts[index].start === '10' ? 'bg-blue-500 text-white' : 'border-gray-300' } rounded mr-2`}
-                >
-                  10
-                </button>
-                <button
-                  onClick={() => handleShiftChange(index, 'start', '17')}
-                  className={`p-2 border ${shifts[index].start === '17' ? 'bg-blue-500 text-white' : 'border-gray-300'} rounded mr-2`}
-                >
-                  17
-                </button>
+                <ShiftButton
+                  label="10"
+                  selected={shifts[index].start === '10'}
+                    onClick={() => handleShiftChange(index, 'start','10')}
+                />
+                <ShiftButton
+                  label="17"
+                  selected={shifts[index].start === '17'}
+                  onClick={() => handleShiftChange(index, 'start','17')}
+                />
                 {/* その他の選択肢をプルダウンで表示 */}
                 <select
                   value={shifts[index].start}
@@ -150,18 +191,16 @@ const ShiftPage = () => {
               </td>
               <td className="border border-gray-300 p-2">
                 {/* 終了時間も同様に設定 */}
-                <button
-                  onClick={() => handleShiftChange(index, 'end', '15')}
-                  className={`p-2 border ${shifts[index].end === '15' ? 'bg-blue-500 text-white' : 'border-gray-300'} rounded mr-2`}
-                >
-                  15
-                </button>
-                <button
-                  onClick={() => handleShiftChange(index, 'end', 'L')}
-                  className={`p-2 border ${shifts[index].end === 'L' ? 'bg-blue-500 text-white' : 'border-gray-300'} rounded mr-2`}
-                >
-                  L
-                </button>
+                <ShiftButton
+                  label="15"
+                  selected={shifts[index].end === '15'}
+                    onClick={() => handleShiftChange(index, 'end','15')}
+                />
+                <ShiftButton
+                  label="L"
+                  selected={shifts[index].end === 'L'}
+                    onClick={() => handleShiftChange(index, 'end','L')}
+                />
                 {/* その他の選択肢をプルダウンで表示 */}
                 <select
                   value={shifts[index].end}
