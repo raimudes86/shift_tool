@@ -23,6 +23,7 @@ const ShiftPage = () => {
   const [half, setHalf] = useState('前半');
   const [days, setDays] = useState<string[]>([]);
   const [shifts, setShifts] = useState<{ day: string, auto: string, start: string, end: string }[]>([]);
+  const [showPopup, setShowPopup] = useState(false);
 
   // 年度・月が変更されたときに、日付を取得
   const updateDays = () => {
@@ -65,6 +66,15 @@ const ShiftPage = () => {
       years.push(i);
     }
     return years;
+  };
+
+  //コピーされたことを表示する関数
+  const handleCopy = () => {
+    setShowPopup(true);
+    //2秒後にメッセージを消す
+    setTimeout(() => {
+      setShowPopup(false);
+    }, 2000);
   };
 
   // 月の選択肢
@@ -238,16 +248,26 @@ const ShiftPage = () => {
       </table>
 
       {/* コピー機能 */}
-      <div className="mt-4">
+      <div className="mt-4 relative">
         <button
-          onClick={() => navigator.clipboard.writeText(generateCopyText())}
+          onClick={() => {
+            navigator.clipboard.writeText(generateCopyText());
+            handleCopy();
+          }}
           className="bg-blue-500 text-white min-w-full h-16 rounded hover:bg-blue-700"
         >
           コピー
         </button>
+        {showPopup && (
+          <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+            <div className="bg-white p-4 rounded shadow-lg text-center">
+              <p className="text-lg font-semibold">コピーされました！</p>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
-};
+}
 
 export default ShiftPage;
