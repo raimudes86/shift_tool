@@ -2,14 +2,14 @@
 import { useState, useEffect } from 'react';
 
 // 時間選択肢
-const startTimeOptions = ['10', '17', '11', '18', '18.5','9','10.5','11.5'];
-const endTimeOptions = ['15', 'L', '14', '14.5','17'];
+const startTimeOptions = ['10', '17', '11', '18', '18.5','9','10.5','11.5','19'];
+const endTimeOptions = ['15', 'L', '14', '14.5','17','19'];
 
 const ShiftButton = ({ label, selected, onClick }: { label: string, selected: boolean, onClick: () => void }) => {
   return (
     <button
       onClick={onClick}
-      className={`p-2 border ${selected ? 'bg-blue-500 text-white' : 'border-gray-300'} rounded mr-2`}
+      className={`p-2 border ${selected ? label === '昼'|| label === '夜'|| label === '通し' ? 'bg-gray-600 text-white' : 'bg-blue-500 text-white' : label === '昼'|| label === '夜'|| label === '通し' ? 'bg-gray-400 text-white' : 'border-gray-300'} rounded mr-2`}
     >
       {label}
     </button>
@@ -85,7 +85,7 @@ const ShiftPage = () => {
 
   return (
     <div className="p-4">
-      <h1 className="text-2xl font-bold mb-4">シフト作成</h1>
+      <h1 className="text-2xl font-bold mb-4">「青山がらり」シフトコピーツール</h1>
 
       {/* 年度、月、前半・後半の選択 */}
       <div className="flex space-x-4 mb-4">
@@ -117,105 +117,120 @@ const ShiftPage = () => {
           </select>
         </div>
       </div>
+      <p>テンプレのどれかを押すとデフォルトで(昼→10〜15,夜→17〜L,通し→10〜L)が選択されます。</p>
+      <p>※最後に一番下のコピーボタンを押すとコピーされています</p>
 
       {/* 日付ごとのシフト設定 */}
       <table className="min-w-full border-collapse border border-gray-300">
         <thead>
           <tr>
             <th className="border border-gray-300 p-2">日付</th>
-            <th className="border border-gray-300 p-2">自動</th>
+            <th className="border border-gray-300 p-2">テンプレ</th>
             <th className="border border-gray-300 p-2">開始時間</th>
+            <th className='border border-gray-300 p-2'></th>
             <th className="border border-gray-300 p-2">終了時間</th>
           </tr>
         </thead>
         <tbody>
           {days.map((day, index) => (
             <tr key={day}>
-              <td className="border border-gray-300 p-2">{day}日</td>
+              <td className="border border-gray-300 p-2 ">{day}日</td>
               <td className="border border-gray-300 p-2">
-              <ShiftButton
-                  label="昼"
-                  selected={shifts[index].auto === '昼'}
-                  onClick={() => {
-                    handleShiftChange(index, 'start','10');
-                    handleShiftChange(index, 'end', '15');
-                    handleShiftChange(index, 'auto', '昼');
-                  }}
-                />
-                <ShiftButton
-                  label="夜"
-                  selected={shifts[index].auto === '夜'}
-                  onClick={() => {
-                    handleShiftChange(index, 'start','17');
-                    handleShiftChange(index, 'end', 'L');
-                    handleShiftChange(index, 'auto', '夜');
-                  }}
-                />
-                <ShiftButton
-                  label="通し"
-                  selected={shifts[index].auto === '通し'}
-                  onClick={() => {
-                    handleShiftChange(index, 'start','10');
-                    handleShiftChange(index, 'end', 'L');
-                    handleShiftChange(index, 'auto', '通し');
-                  }}
-                />
+                <div className='flex flex-col'>
+                  <ShiftButton
+                      label="昼"
+                      selected={shifts[index].auto === '昼'}
+                      onClick={() => {
+                        handleShiftChange(index, 'start','10');
+                        handleShiftChange(index, 'end', '15');
+                        handleShiftChange(index, 'auto', '昼');
+                      }}
+                    />
+                    <ShiftButton
+                      label="夜"
+                      selected={shifts[index].auto === '夜'}
+                      onClick={() => {
+                        handleShiftChange(index, 'start','17');
+                        handleShiftChange(index, 'end', 'L');
+                        handleShiftChange(index, 'auto', '夜');
+                      }}
+                    />
+                    <ShiftButton
+                      label="通し"
+                      selected={shifts[index].auto === '通し'}
+                      onClick={() => {
+                        handleShiftChange(index, 'start','10');
+                        handleShiftChange(index, 'end', 'L');
+                        handleShiftChange(index, 'auto', '通し');
+                      }}
+                    />
+                  </div>
               </td>
+
               <td className="border border-gray-300 p-2">
                 {/* 最初に固定された2つの選択肢 */}
-                <ShiftButton
-                  label="10"
-                  selected={shifts[index].start === '10'}
-                    onClick={() => handleShiftChange(index, 'start','10')}
-                />
-                <ShiftButton
-                  label="17"
-                  selected={shifts[index].start === '17'}
-                  onClick={() => handleShiftChange(index, 'start','17')}
-                />
-                {/* その他の選択肢をプルダウンで表示 */}
-                <select
-                  value={shifts[index].start}
-                  onChange={(e) => handleShiftChange(index, 'start', e.target.value)}
-                  className="p-2 border border-gray-300 rounded"
-                >
-                  <option value="">他の時間を選択</option>
-                  {startTimeOptions
-                    .filter((time) => time !== '10' && time !== '17') // 既にボタンで表示されているものは除く
-                    .map((time) => (
-                      <option key={time} value={time}>
-                        {time}
-                      </option>
-                    ))}
-                </select>
+                <div className='flex flex-col'>
+                  <ShiftButton
+                    label="10"
+                    selected={shifts[index].start === '10'}
+                      onClick={() => handleShiftChange(index, 'start','10')}
+                  />
+                  <ShiftButton
+                    label="17"
+                    selected={shifts[index].start === '17'}
+                    onClick={() => handleShiftChange(index, 'start','17')}
+                  />
+                  {/* その他の選択肢をプルダウンで表示 */}
+                  <select
+                    value={shifts[index].start}
+                    onChange={(e) => handleShiftChange(index, 'start', e.target.value)}
+                    className="p-2 border border-gray-300 rounded"
+                  >
+                    <option value="">その他</option>
+                    {startTimeOptions
+                      .filter((time) => time !== '10' && time !== '17') // 既にボタンで表示されているものは除く
+                      .map((time) => (
+                        <option key={time} value={time}>
+                          {time}
+                        </option>
+                      ))}
+                  </select>
+                </div>
               </td>
+
+              <td  className="border border-gray-300">
+                <p className="text-center">〜</p>
+              </td>
+
               <td className="border border-gray-300 p-2">
-                {/* 終了時間も同様に設定 */}
-                <ShiftButton
-                  label="15"
-                  selected={shifts[index].end === '15'}
-                    onClick={() => handleShiftChange(index, 'end','15')}
-                />
-                <ShiftButton
-                  label="L"
-                  selected={shifts[index].end === 'L'}
-                    onClick={() => handleShiftChange(index, 'end','L')}
-                />
-                {/* その他の選択肢をプルダウンで表示 */}
-                <select
-                  value={shifts[index].end}
-                  onChange={(e) => handleShiftChange(index, 'end', e.target.value)}
-                  className="p-2 border border-gray-300 rounded"
-                >
-                  <option value="">他の時間を選択</option>
-                  {endTimeOptions
-                    .filter((time) => time !== '15' && time !== 'L') // 既にボタンで表示されているものは除く
-                    .map((time) => (
-                      <option key={time} value={time}>
-                        {time}
-                      </option>
-                    ))}
-                </select>
+                  {/* 終了時間も同様に設定 */}
+                <div className='flex flex-col'>
+                  <ShiftButton
+                    label="15"
+                    selected={shifts[index].end === '15'}
+                      onClick={() => handleShiftChange(index, 'end','15')}
+                  />
+                  <ShiftButton
+                    label="L"
+                    selected={shifts[index].end === 'L'}
+                      onClick={() => handleShiftChange(index, 'end','L')}
+                  />
+                  {/* その他の選択肢をプルダウンで表示 */}
+                  <select
+                    value={shifts[index].end}
+                    onChange={(e) => handleShiftChange(index, 'end', e.target.value)}
+                    className="p-2 border border-gray-300 rounded"
+                  >
+                    <option value="">その他</option>
+                    {endTimeOptions
+                      .filter((time) => time !== '15' && time !== 'L') // 既にボタンで表示されているものは除く
+                      .map((time) => (
+                        <option key={time} value={time}>
+                          {time}
+                        </option>
+                      ))}
+                  </select>
+                </div>
               </td>
             </tr>
           ))}
@@ -226,7 +241,7 @@ const ShiftPage = () => {
       <div className="mt-4">
         <button
           onClick={() => navigator.clipboard.writeText(generateCopyText())}
-          className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-700"
+          className="bg-blue-500 text-white min-w-full h-16 rounded hover:bg-blue-700"
         >
           コピー
         </button>
