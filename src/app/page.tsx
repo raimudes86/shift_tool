@@ -71,10 +71,10 @@ const ShiftPage = () => {
   //コピーされたことを表示する関数
   const handleCopy = () => {
     setShowPopup(true);
-    //2秒後にメッセージを消す
+    //1秒後にメッセージを消す
     setTimeout(() => {
       setShowPopup(false);
-    }, 2000);
+    }, 1000);
   };
 
   // 月の選択肢
@@ -127,15 +127,15 @@ const ShiftPage = () => {
           </select>
         </div>
       </div>
-      <p>テンプレのどれかを押すとデフォルトで(昼→10〜15,夜→17〜L,通し→10〜L)が選択されます。</p>
-      <p>※最後に一番下のコピーボタンを押すとコピーされています</p>
+      <p>※<a className="font-bold">テンプレ</a>のどれかを押すか自分で時間を選択してください。</p>
+      <p>最後に一番下のコピーボタンを押してください。</p>
 
       {/* 日付ごとのシフト設定 */}
       <table className="min-w-full border-collapse border border-gray-300">
         <thead>
           <tr>
             <th className="border border-gray-300 p-2">日付</th>
-            <th className="border border-gray-300 p-2">テンプレ</th>
+            <th className="border border-gray-300 p-2">※テンプレ</th>
             <th className="border border-gray-300 p-2">開始時間</th>
             <th className='border border-gray-300 p-2'></th>
             <th className="border border-gray-300 p-2">終了時間</th>
@@ -194,8 +194,7 @@ const ShiftPage = () => {
                   <select
                     value={shifts[index].start}
                     onChange={(e) => handleShiftChange(index, 'start', e.target.value)}
-                    className="p-2 border border-gray-300 rounded"
-                  >
+                    className={`p-2 border border-gray-300 rounded ${shifts[index].start === '10' || shifts[index].start === '17' || shifts[index].start === '' ? '' :'bg-blue-500 text-white'}`}>
                     <option value="">その他</option>
                     {startTimeOptions
                       .filter((time) => time !== '10' && time !== '17') // 既にボタンで表示されているものは除く
@@ -229,8 +228,7 @@ const ShiftPage = () => {
                   <select
                     value={shifts[index].end}
                     onChange={(e) => handleShiftChange(index, 'end', e.target.value)}
-                    className="p-2 border border-gray-300 rounded"
-                  >
+                    className={`p-2 border border-gray-300 rounded ${shifts[index].end === '15' || shifts[index].end === 'L' || shifts[index].end === '' ? '' :'bg-blue-500 text-white'}`}>
                     <option value="">その他</option>
                     {endTimeOptions
                       .filter((time) => time !== '15' && time !== 'L') // 既にボタンで表示されているものは除く
@@ -248,7 +246,7 @@ const ShiftPage = () => {
       </table>
 
       {/* コピー機能 */}
-      <div className="mt-4 relative">
+      <div className="mt-4">
         <button
           onClick={() => {
             navigator.clipboard.writeText(generateCopyText());
