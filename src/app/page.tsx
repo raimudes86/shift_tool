@@ -95,7 +95,7 @@ const ShiftPage = () => {
 
   return (
     <div className="p-4">
-      <h1 className="text-2xl font-bold mb-4">「青山がらり」シフトコピーツール</h1>
+      <h1 className="text-2xl font-bold mb-4">「青山がらり」<p>シフトコピーツール</p></h1>
 
       {/* 年度、月、前半・後半の選択 */}
       <div className="flex space-x-4 mb-4">
