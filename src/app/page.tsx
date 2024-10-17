@@ -18,11 +18,15 @@ const ShiftButton = ({ label, selected, onClick }: { label: string, selected: bo
 
 
 const ShiftPage = () => {
-  const [year, setYear] = useState('2024');
-  const [month, setMonth] = useState('10');
-  const [half, setHalf] = useState('前半');
-  const [days, setDays] = useState<string[]>([]);
-  const [shifts, setShifts] = useState<{ day: string, auto: string, start: string, end: string }[]>([]);
+  const today = new Date();
+  const todays_year = today.getFullYear();
+  const next_month = today.getDate() < 15 ? today.getMonth()+1 : today.getMonth()+2;
+  const next_half = today.getDate() < 15 ? "後半" : "前半";
+  const [year, setYear] = useState(todays_year);
+  const [month, setMonth] = useState(String(next_month));
+  const [half, setHalf] = useState(next_half);
+  const [days, setDays] = useState<{date: string, youbi: string}[]>([]);
+  const [shifts, setShifts] = useState<{ day: string, auto: string, start: string, end: string, youbi: string }[]>([]);
   const [showPopup, setShowPopup] = useState(false);
 
   // 年度・月が変更されたときに、日付を取得
@@ -30,11 +34,18 @@ const ShiftPage = () => {
     const maxDay = new Date(Number(year), Number(month), 0).getDate();
     const startDay = half === '前半' ? 1 : 16;
     const lastDay = half === '前半' ? 15 : maxDay;
-    const newDays = Array.from({ length: lastDay - startDay + 1 }, (_, i) => (startDay + i).toString());
+    const daysOfSet = ['日','月','火','水', '木', '金', '土'];
+    const newDays = Array.from({ length: lastDay - startDay + 1 }, (_, i) =>{
+      //Dateのmonthは0からスタートだからずらしてあげないといけないのは注意
+      const currentDate = new Date(year, Number(month)-1, startDay + i );
+      const date = currentDate.getDate();
+      const youbi = daysOfSet[currentDate.getDay()];
+      return {date: String(date), youbi};
+    });
     setDays(newDays);
 
     // 初期のシフトデータも更新
-    const initialShifts = newDays.map(day => ({ day, auto: '', start: '', end: '' }));
+    const initialShifts = newDays.map(day => ({ day: day.date , auto: '', start: '', end: '', youbi: day.youbi }));
     setShifts(initialShifts);
   };
 
@@ -45,6 +56,7 @@ const ShiftPage = () => {
 
   // シフトの時間を変更する
   const handleShiftChange = (index: number, type: 'start' | 'end' | 'auto', value: string) => {
+    //ここでちゃんとyoubiもコピーされているから大丈夫
     const updatedShifts = [...shifts];
     updatedShifts[index]['auto'] = '';
     updatedShifts[index][type] = value;
@@ -55,8 +67,8 @@ const ShiftPage = () => {
   const generateCopyText = () => {
     return shifts
       .filter(shift => shift.start && shift.end)
-      .map(shift => `${shift.day}日\t${shift.start}~${shift.end}`)
-      .join('\n');
+      .map(shift => `${shift.day}日(${shift.youbi}) ${shift.start}~${shift.end}`)
+      .join('\n') + '\nお願いします！';
   };
 
   // 年の選択肢を2024年から2050年まで生成
@@ -143,8 +155,10 @@ const ShiftPage = () => {
         </thead>
         <tbody>
           {days.map((day, index) => (
-            <tr key={day}>
-              <td className="border border-gray-300 p-2 ">{day}日</td>
+            <tr key={day.date}>
+              <td className="border border-gray-300 p-2 ">
+                {day.date}日({day.youbi})
+              </td>
               <td className="border border-gray-300 p-2">
                 <div className='flex flex-col'>
                   <ShiftButton
