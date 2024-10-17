@@ -48,10 +48,24 @@ const ShiftPage = () => {
     updateDays();
   }, [year, month, half]);
 
-  const handleShiftChange = (index: number, type: 'start' | 'end' | 'auto', value: string) => {
+  const handleShiftChange_normal = (index: number, type: 'start' | 'end' | 'auto', value: string, judge: boolean) => {
     const updatedShifts = [...shifts];
     updatedShifts[index]['auto'] = '';
-    updatedShifts[index][type] = value;
+    updatedShifts[index][type] = judge ? '' : value;
+    setShifts(updatedShifts);
+  };
+
+  const handleShiftChange_special = (index: number,value_auto: string, start: string, end: string, judge: boolean) => {
+    const updatedShifts = [...shifts];
+    if (!judge){
+      updatedShifts[index]['auto'] = value_auto
+      updatedShifts[index]['start'] = start
+      updatedShifts[index]['end'] = end
+    }else{
+      updatedShifts[index]['auto'] = ''
+      updatedShifts[index]['start'] = ''
+      updatedShifts[index]['end'] = ''
+    }
     setShifts(updatedShifts);
   };
 
@@ -151,27 +165,22 @@ const ShiftPage = () => {
                     label="昼"
                     selected={shifts[index].auto === '昼'}
                     onClick={() => {
-                      handleShiftChange(index, 'start','10');
-                      handleShiftChange(index, 'end', '15');
-                      handleShiftChange(index, 'auto', '昼');
+                      handleShiftChange_special(index, '昼', '10', '15', shifts[index].auto === '昼');
+
                     }}
                   />
                   <ShiftButton
                     label="夜"
                     selected={shifts[index].auto === '夜'}
                     onClick={() => {
-                      handleShiftChange(index, 'start','17');
-                      handleShiftChange(index, 'end', 'L');
-                      handleShiftChange(index, 'auto', '夜');
+                      handleShiftChange_special(index, '夜', '17', 'L', shifts[index].auto === '夜');
                     }}
                   />
                   <ShiftButton
                     label="通し"
                     selected={shifts[index].auto === '通し'}
                     onClick={() => {
-                      handleShiftChange(index, 'start','10');
-                      handleShiftChange(index, 'end', 'L');
-                      handleShiftChange(index, 'auto', '通し');
+                      handleShiftChange_special(index, '通し', '10', 'L', shifts[index].auto === '通し');
                     }}
                   />
                 </div>
@@ -182,16 +191,16 @@ const ShiftPage = () => {
                   <ShiftButton
                     label="10"
                     selected={shifts[index].start === '10'}
-                    onClick={() => handleShiftChange(index, 'start','10')}
+                    onClick={() => handleShiftChange_normal(index, 'start','10',shifts[index].start === '10')}
                   />
                   <ShiftButton
                     label="17"
                     selected={shifts[index].start === '17'}
-                    onClick={() => handleShiftChange(index, 'start','17')}
+                    onClick={() => handleShiftChange_normal(index, 'start','17',shifts[index].start === '17')}
                   />
                   <select
                     value={shifts[index].start}
-                    onChange={(e) => handleShiftChange(index, 'start', e.target.value)}
+                    onChange={(e) => handleShiftChange_normal(index, 'start', e.target.value, false)}
                     className="p-2 border border-gray-300 rounded mt-2 bg-white"
                   >
                     <option value="">その他</option>
@@ -213,16 +222,16 @@ const ShiftPage = () => {
                   <ShiftButton
                     label="15"
                     selected={shifts[index].end === '15'}
-                    onClick={() => handleShiftChange(index, 'end','15')}
+                    onClick={() => handleShiftChange_normal(index, 'end','15',shifts[index].end === '15')}
                   />
                   <ShiftButton
                     label="L"
                     selected={shifts[index].end === 'L'}
-                    onClick={() => handleShiftChange(index, 'end','L')}
+                    onClick={() => handleShiftChange_normal(index, 'end','L',shifts[index].end === 'L')}
                   />
                   <select
                     value={shifts[index].end}
-                    onChange={(e) => handleShiftChange(index, 'end', e.target.value)}
+                    onChange={(e) => handleShiftChange_normal(index, 'end', e.target.value, false)}
                     className="p-2 border border-gray-300 rounded mt-2 bg-white"
                   >
                     <option value="">その他</option>
