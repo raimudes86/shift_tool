@@ -8,7 +8,7 @@ const ShiftButton = ({ label, selected, onClick }: { label: string, selected: bo
   return (
     <button
       onClick={onClick}
-      className={`p-2 border ${selected ? 'bg-blue-600 text-white' : 'bg-gray-100 text-gray-700'} hover:bg-blue-500 hover:text-white transition-colors duration-300 ease-in-out rounded mr-2 mb-2`}
+      className={`py-2 px-5 border shadow-md ${selected ? 'bg-blue-600 text-white' : (label === '昼' || label === '夜' || label === '通し') ? 'bg-gray-400' :'bg-gray-100 text-gray-700'}  transition-colors duration-300 ease-in-out rounded mr-2 mb-2`}
     >
       {label}
     </button>
@@ -142,22 +142,22 @@ const ShiftPage = () => {
       </div>
 
       {/* 説明文 */}
-      <p className="text-gray-600 text-center mb-6">テンプレを押すか自分で時間を選択してください。最後に一番下のコピーボタンを押してください。</p>
+      <p className="text-gray-600 text-center mb-6">※テンプレを押すか自分で時間を選択してください。<br></br>最後に一番下のコピーボタンを押してください。</p>
 
       {/* シフト設定 */}
       <table className="min-w-full table-auto border-collapse border border-gray-300 shadow-lg rounded-lg">
         <thead className="bg-gray-100">
           <tr>
-            <th className="border border-gray-300 p-4 text-left">日付</th>
-            <th className="border border-gray-300 p-4 text-left">テンプレ</th>
-            <th className="border border-gray-300 p-4 text-left">開始時間</th>
-            <th className='border border-gray-300 p-4 text-left'></th>
-            <th className="border border-gray-300 p-4 text-left">終了時間</th>
+            <th className="border border-gray-300 p-3 text-center">日付</th>
+            <th className="border border-gray-300 p-3 text-center">※テンプレ</th>
+            <th className="border border-gray-300 p-3 text-center">開始</th>
+            <th className='border border-gray-300 '></th>
+            <th className="border border-gray-300 p-3 text-center">終了</th>
           </tr>
         </thead>
         <tbody>
           {days.map((day, index) => (
-            <tr key={day.date} className="hover:bg-gray-100 transition-colors duration-200 ease-in-out">
+            <tr key={day.date} className=" duration-200 ease-in-out">
               <td className="border border-gray-300 p-4">{day.date}日({day.youbi})</td>
               <td className="border border-gray-300 p-4 ">
                 <div className="flex flex-col sm:flex-row">
@@ -257,7 +257,7 @@ const ShiftPage = () => {
             navigator.clipboard.writeText(generateCopyText());
             handleCopy();
           }}
-          className="bg-blue-600 text-white w-full py-4 rounded hover:bg-blue-700 transition-colors duration-300"
+          className="bg-blue-600 text-white w-full py-4 rounded  transition-colors duration-300"
         >
           コピー
         </button>
