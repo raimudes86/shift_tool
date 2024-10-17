@@ -22,7 +22,7 @@ const ShiftPage = () => {
   const todays_year = today.getFullYear();
   const next_month = today.getDate() < 15 ? today.getMonth()+1 : today.getMonth()+2;
   const next_half = today.getDate() < 15 ? "後半" : "前半";
-  const [year, setYear] = useState(todays_year);
+  const [year, setYear] = useState(String(todays_year));
   const [month, setMonth] = useState(String(next_month));
   const [half, setHalf] = useState(next_half);
   const [days, setDays] = useState<{date: string, youbi: string}[]>([]);
@@ -37,7 +37,7 @@ const ShiftPage = () => {
     const daysOfSet = ['日','月','火','水', '木', '金', '土'];
     const newDays = Array.from({ length: lastDay - startDay + 1 }, (_, i) =>{
       //Dateのmonthは0からスタートだからずらしてあげないといけないのは注意
-      const currentDate = new Date(year, Number(month)-1, startDay + i );
+      const currentDate = new Date(Number(year), Number(month)-1, startDay + i );
       const date = currentDate.getDate();
       const youbi = daysOfSet[currentDate.getDay()];
       return {date: String(date), youbi};
