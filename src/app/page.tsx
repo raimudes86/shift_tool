@@ -107,7 +107,7 @@ const ShiftPage = () => {
   ];
 
   return (
-    <div className="p-6 bg-gray-50 min-h-screen">
+    <div className="p-6 bg-gray-50 min-h-screen mx-auto">
       <h1 className="text-3xl font-extrabold mb-6 text-center">「青山がらり」<p>シフトコピーツール</p></h1>
 
       {/* 年度、月、前半・後半の選択 */}
