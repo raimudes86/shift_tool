@@ -116,7 +116,7 @@ const ShiftPage = () => {
   ];
 
   return (
-    <div className="p-6 bg-gray-50 min-h-screen mx-auto">
+    <div className="p-0.5 mt-6 bg-gray-50 min-h-screen mx-auto">
       <h1 className="text-3xl font-extrabold mb-6 text-center">「青山がらり」<p>シフトコピーツール</p></h1>
 
       {/* 年度、月、前半・後半の選択 */}
@@ -151,24 +151,28 @@ const ShiftPage = () => {
       </div>
 
       {/* 説明文 */}
-      <p className="text-gray-600 text-center mb-6">※テンプレを押すか自分で時間を選択してください。<br></br>最後に一番下のコピーボタンを押してください。</p>
+      <p className="text-gray-600 text-center mb-6">※テンプレを押す or 自分で時間を選択<br></br>最後に一番下のコピーボタンを押す</p>
 
       {/* シフト設定 */}
       <table className="min-w-full table-auto border-collapse border border-gray-300 shadow-lg rounded-lg">
-        <thead className="bg-gray-100">
+        <thead className="bg-gray-100 text-sm">
           <tr>
-            <th className="border border-gray-300 p-3 text-center">日付</th>
-            <th className="border border-gray-300 p-3 text-center">※テンプレ</th>
-            <th className="border border-gray-300 p-3 text-center">開始</th>
-            <th className='border border-gray-300 '></th>
-            <th className="border border-gray-300 p-3 text-center">終了</th>
+            <th className="border border-gray-300 p-1 text-center text-base">日付</th>
+            <th className="border border-gray-300 p-1 text-center text-base">※テンプレ</th>
+            <th className="border border-gray-300 p-1 text-center text-base">開始</th>
+            {/* <th className='border border-gray-300 '></th> */}
+            <th className="border border-gray-300 p-1 text-center text-base">終了</th>
           </tr>
         </thead>
         <tbody>
           {days.map((day, index) => (
             <tr key={day.date} className=" duration-200 ease-in-out">
-              <td className="border border-gray-300 p-4">{day.date}日({day.youbi})</td>
-              <td className="border border-gray-300 p-4 ">
+
+              {/* 日付 */}
+              <td className="border border-gray-300 p-1">{day.date}日(<span className={day.youbi === '日' ? "text-red-500" : day.youbi === '土' ? "text-blue-500" : "text-black-500"}>{day.youbi}</span>)</td>
+              
+              {/* テンプレ */}
+              <td className="border border-gray-300 p-3 ">
                 <div className="flex flex-col sm:flex-row">
                   <ShiftButton
                     label="昼"
@@ -195,7 +199,8 @@ const ShiftPage = () => {
                 </div>
               </td>
 
-              <td className="border border-gray-300 p-4">
+              {/* 開始 */}
+              <td className="border border-gray-300 p-3">
                 <div className="flex flex-col sm:flex-row">
                   <ShiftButton
                     label="10"
@@ -224,9 +229,10 @@ const ShiftPage = () => {
                 </div>
               </td>
 
-              <td className="border border-gray-300 p-4 text-center">〜</td>
+              {/* <td className="border border-gray-300 p-4 text-center">〜</td> */}
 
-              <td className="border border-gray-300 p-4">
+              {/* 終了 */}
+              <td className="border border-gray-300 p-3">
                 <div className="flex flex-col sm:flex-row">
                   <ShiftButton
                     label="15"
@@ -260,7 +266,7 @@ const ShiftPage = () => {
       </table>
 
       {/* コピー機能 */}
-      <div className="mt-8">
+      <div className="p-5">
         <button
           onClick={() => {
             navigator.clipboard.writeText(generateCopyText());
