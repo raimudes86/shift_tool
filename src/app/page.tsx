@@ -16,10 +16,18 @@ const ShiftButton = ({ label, selected, onClick }: { label: string, selected: bo
 };
 
 const ShiftPage = () => {
+  //今日の日付から必要な変数を初期化
   const today = new Date();
-  const todays_year = today.getFullYear();
-  const next_month = today.getDate() < 15 ? today.getMonth()+1 : today.getMonth()+2;
+  let todays_year = today.getFullYear();
+  let next_month = today.getDate() < 15 ? today.getMonth()+1 : today.getMonth()+2;
   const next_half = today.getDate() < 15 ? "後半" : "前半";
+  //年を跨ぐときの処理
+  if (next_month === 13){
+    next_month = 1;
+    if (next_half === "前半"){
+      todays_year += 1;
+    }
+  }
   const [year, setYear] = useState(String(todays_year));
   const [month, setMonth] = useState(String(next_month));
   const [half, setHalf] = useState(next_half);
@@ -44,6 +52,7 @@ const ShiftPage = () => {
     setShifts(initialShifts);
   };
 
+  //依存配列によって,year,month,halfが変更された時にupdataDays()が実行される
   useEffect(() => {
     updateDays();
   }, [year, month, half]);
