@@ -79,7 +79,7 @@ const ShiftPage = () => {
   };
 
   const generateCopyText = () => {
-    return 'お疲れ様です。\n'+ month + '月' + next_half + 'のシフト希望です。\n\n' + shifts
+    return 'お疲れ様です。\n'+ parseInt(month,10) + '月' + next_half + 'のシフト希望です。\n\n' + shifts
       .filter(shift => shift.start && shift.end)
       .map(shift => `${shift.day}日(${shift.youbi}) ${shift.start}~${shift.end}`)
       .join('\n') + '\n\nお願いします!';
