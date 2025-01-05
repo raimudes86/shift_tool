@@ -116,7 +116,7 @@ const ShiftPage = () => {
   ];
 
   return (
-    <div className="p-0.5 mt-6 bg-gray-50 min-h-screen mx-auto">
+    <div className="px-0.5 pt-5 bg-gray-50 min-h-screen mx-auto">
       <h1 className="text-3xl font-extrabold mb-6 text-center">「青山がらり」<p>シフトコピーツール</p></h1>
 
       {/* 年度、月、前半・後半の選択 */}
@@ -154,117 +154,118 @@ const ShiftPage = () => {
       <p className="text-gray-600 text-center mb-6">※テンプレを押す or 自分で時間を選択<br></br>最後に一番下のコピーボタンを押す</p>
 
       {/* シフト設定 */}
-      <table className="min-w-full table-auto border-collapse border border-gray-300 shadow-lg rounded-lg">
-        <thead className="bg-gray-100 text-sm">
-          <tr>
-            <th className="border border-gray-300 p-1 text-center text-base">日付</th>
-            <th className="border border-gray-300 p-1 text-center text-base">※テンプレ</th>
-            <th className="border border-gray-300 p-1 text-center text-base">開始</th>
-            {/* <th className='border border-gray-300 '></th> */}
-            <th className="border border-gray-300 p-1 text-center text-base">終了</th>
-          </tr>
-        </thead>
-        <tbody>
-          {days.map((day, index) => (
-            <tr key={day.date} className=" duration-200 ease-in-out">
-
-              {/* 日付 */}
-              <td className="border border-gray-300 p-1">{day.date}日(<span className={day.youbi === '日' ? "text-red-500" : day.youbi === '土' ? "text-blue-500" : "text-black-500"}>{day.youbi}</span>)</td>
-              
-              {/* テンプレ */}
-              <td className="border border-gray-300 p-3 ">
-                <div className="flex flex-col sm:flex-row">
-                  <ShiftButton
-                    label="昼"
-                    selected={shifts[index].auto === '昼'}
-                    onClick={() => {
-                      handleShiftChange_special(index, '昼', '10', '15', shifts[index].auto === '昼');
-
-                    }}
-                  />
-                  <ShiftButton
-                    label="夜"
-                    selected={shifts[index].auto === '夜'}
-                    onClick={() => {
-                      handleShiftChange_special(index, '夜', '17', 'L', shifts[index].auto === '夜');
-                    }}
-                  />
-                  <ShiftButton
-                    label="通し"
-                    selected={shifts[index].auto === '通し'}
-                    onClick={() => {
-                      handleShiftChange_special(index, '通し', '10', 'L', shifts[index].auto === '通し');
-                    }}
-                  />
-                </div>
-              </td>
-
-              {/* 開始 */}
-              <td className="border border-gray-300 p-3">
-                <div className="flex flex-col sm:flex-row">
-                  <ShiftButton
-                    label="10"
-                    selected={shifts[index].start === '10'}
-                    onClick={() => handleShiftChange_normal(index, 'start','10',shifts[index].start === '10')}
-                  />
-                  <ShiftButton
-                    label="17"
-                    selected={shifts[index].start === '17'}
-                    onClick={() => handleShiftChange_normal(index, 'start','17',shifts[index].start === '17')}
-                  />
-                  <select
-                    value={shifts[index].start}
-                    onChange={(e) => handleShiftChange_normal(index, 'start', e.target.value, false)}
-                    className="p-2 border border-gray-300 rounded mt-2 bg-white"
-                  >
-                    <option value="">その他</option>
-                    {startTimeOptions
-                      .filter((time) => time !== '10' && time !== '17')
-                      .map((time) => (
-                        <option key={time} value={time}>
-                          {time}
-                        </option>
-                      ))}
-                  </select>
-                </div>
-              </td>
-
-              {/* <td className="border border-gray-300 p-4 text-center">〜</td> */}
-
-              {/* 終了 */}
-              <td className="border border-gray-300 p-3">
-                <div className="flex flex-col sm:flex-row">
-                  <ShiftButton
-                    label="15"
-                    selected={shifts[index].end === '15'}
-                    onClick={() => handleShiftChange_normal(index, 'end','15',shifts[index].end === '15')}
-                  />
-                  <ShiftButton
-                    label="L"
-                    selected={shifts[index].end === 'L'}
-                    onClick={() => handleShiftChange_normal(index, 'end','L',shifts[index].end === 'L')}
-                  />
-                  <select
-                    value={shifts[index].end}
-                    onChange={(e) => handleShiftChange_normal(index, 'end', e.target.value, false)}
-                    className="p-2 border border-gray-300 rounded mt-2 bg-white"
-                  >
-                    <option value="">その他</option>
-                    {endTimeOptions
-                      .filter((time) => time !== '15' && time !== 'L')
-                      .map((time) => (
-                        <option key={time} value={time}>
-                          {time}
-                        </option>
-                      ))}
-                  </select>
-                </div>
-              </td>
+      <div className="overflow-x-auto mx-auto max-w-screen-lg">
+        <table className="min-w-full table-auto border-collapse border border-gray-300 shadow-lg rounded-lg">
+          <thead className="bg-gray-100 text-sm">
+            <tr>
+              <th className="border border-gray-300 p-1 text-center text-base">日付</th>
+              <th className="border border-gray-300 p-1 text-center text-base">※テンプレ</th>
+              <th className="border border-gray-300 p-1 text-center text-base">開始</th>
+              {/* <th className='border border-gray-300 '></th> */}
+              <th className="border border-gray-300 p-1 text-center text-base">終了</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {days.map((day, index) => (
+              <tr key={day.date} className=" duration-200 ease-in-out">
 
+                {/* 日付 */}
+                <td className="border border-gray-300 p-1">{day.date}日(<span className={day.youbi === '日' ? "text-red-500" : day.youbi === '土' ? "text-blue-500" : "text-black-500"}>{day.youbi}</span>)</td>
+                
+                {/* テンプレ */}
+                <td className="border border-gray-300 p-3 ">
+                  <div className="flex flex-col sm:flex-row">
+                    <ShiftButton
+                      label="昼"
+                      selected={shifts[index].auto === '昼'}
+                      onClick={() => {
+                        handleShiftChange_special(index, '昼', '10', '15', shifts[index].auto === '昼');
+
+                      }}
+                    />
+                    <ShiftButton
+                      label="夜"
+                      selected={shifts[index].auto === '夜'}
+                      onClick={() => {
+                        handleShiftChange_special(index, '夜', '17', 'L', shifts[index].auto === '夜');
+                      }}
+                    />
+                    <ShiftButton
+                      label="通し"
+                      selected={shifts[index].auto === '通し'}
+                      onClick={() => {
+                        handleShiftChange_special(index, '通し', '10', 'L', shifts[index].auto === '通し');
+                      }}
+                    />
+                  </div>
+                </td>
+
+                {/* 開始 */}
+                <td className="border border-gray-300 p-3">
+                  <div className="flex flex-col sm:flex-row">
+                    <ShiftButton
+                      label="10"
+                      selected={shifts[index].start === '10'}
+                      onClick={() => handleShiftChange_normal(index, 'start','10',shifts[index].start === '10')}
+                    />
+                    <ShiftButton
+                      label="17"
+                      selected={shifts[index].start === '17'}
+                      onClick={() => handleShiftChange_normal(index, 'start','17',shifts[index].start === '17')}
+                    />
+                    <select
+                      value={shifts[index].start}
+                      onChange={(e) => handleShiftChange_normal(index, 'start', e.target.value, false)}
+                      className="p-2 border border-gray-300 rounded mt-2 bg-white"
+                    >
+                      <option value="">その他</option>
+                      {startTimeOptions
+                        .filter((time) => time !== '10' && time !== '17')
+                        .map((time) => (
+                          <option key={time} value={time}>
+                            {time}
+                          </option>
+                        ))}
+                    </select>
+                  </div>
+                </td>
+
+                {/* <td className="border border-gray-300 p-4 text-center">〜</td> */}
+
+                {/* 終了 */}
+                <td className="border border-gray-300 p-3">
+                  <div className="flex flex-col sm:flex-row">
+                    <ShiftButton
+                      label="15"
+                      selected={shifts[index].end === '15'}
+                      onClick={() => handleShiftChange_normal(index, 'end','15',shifts[index].end === '15')}
+                    />
+                    <ShiftButton
+                      label="L"
+                      selected={shifts[index].end === 'L'}
+                      onClick={() => handleShiftChange_normal(index, 'end','L',shifts[index].end === 'L')}
+                    />
+                    <select
+                      value={shifts[index].end}
+                      onChange={(e) => handleShiftChange_normal(index, 'end', e.target.value, false)}
+                      className="p-2 border border-gray-300 rounded mt-2 bg-white"
+                    >
+                      <option value="">その他</option>
+                      {endTimeOptions
+                        .filter((time) => time !== '15' && time !== 'L')
+                        .map((time) => (
+                          <option key={time} value={time}>
+                            {time}
+                          </option>
+                        ))}
+                    </select>
+                  </div>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
       {/* コピー機能 */}
       <div className="p-5">
         <button
