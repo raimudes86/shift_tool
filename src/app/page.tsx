@@ -79,10 +79,10 @@ const ShiftPage = () => {
   };
 
   const generateCopyText = () => {
-    return shifts
+    return 'お疲れ様です。\n'+ month + '月' + next_half + 'のシフト希望です。\n\n' + shifts
       .filter(shift => shift.start && shift.end)
       .map(shift => `${shift.day}日(${shift.youbi}) ${shift.start}~${shift.end}`)
-      .join('\n') + '\nお願いします！';
+      .join('\n') + '\n\nお願いします!';
   };
 
   const generateYearOptions = () => {
@@ -265,25 +265,26 @@ const ShiftPage = () => {
             ))}
           </tbody>
         </table>
-      </div>
-      {/* コピー機能 */}
-      <div className="p-5">
-        <button
-          onClick={() => {
-            navigator.clipboard.writeText(generateCopyText());
-            handleCopy();
-          }}
-          className="bg-blue-600 text-white w-full py-4 rounded  transition-colors duration-300"
-        >
-          コピー
-        </button>
-        {showPopup && (
-          <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-            <div className="bg-white p-6 rounded shadow-lg text-center">
-              <p className="text-lg font-semibold">コピーされました！</p>
+      
+        {/* コピー機能 */}
+        <div className="p-5">
+          <button
+            onClick={() => {
+              navigator.clipboard.writeText(generateCopyText());
+              handleCopy();
+            }}
+            className="bg-blue-600 text-white w-full py-4 rounded  transition-colors duration-300"
+          >
+            コピー
+          </button>
+          {showPopup && (
+            <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+              <div className="bg-white p-6 rounded shadow-lg text-center">
+                <p className="text-lg font-semibold">コピーされました！</p>
+              </div>
             </div>
-          </div>
-        )}
+          )}
+        </div>
       </div>
     </div>
   );
