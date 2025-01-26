@@ -269,13 +269,13 @@ const ShiftPage = () => {
         </table>
       
         {/* コピー機能 */}
-        <div className="p-5">
+        <div className="p-5 flex flex-row items-center justify-center xpace-x-8 mt-2">
           <button
             onClick={() => {
               navigator.clipboard.writeText(generateCopyText());
               handleCopy();
             }}
-            className="bg-blue-600 text-white w-full py-4 rounded  transition-colors duration-300"
+            className="mx-8 px-5 py-2.5 bg-blue-500 text-white border-none rounded cursor-pointer hover:bg-blue-600"
           >
             コピー
           </button>
