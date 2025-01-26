@@ -1,5 +1,6 @@
 "use client";
 import { useState, useEffect } from 'react';
+import LineShareButton from './components/LineShareButton';
 
 const startTimeOptions = ['10', '17', '11', '18', '18.5','9','10.5','11.5','19'];
 const endTimeOptions = ['15', 'L', '14', '14.5','17','19'];
@@ -277,6 +278,9 @@ const ShiftPage = () => {
           >
             コピー
           </button>
+
+          <LineShareButton text={generateCopyText()} />
+
           {showPopup && (
             <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
               <div className="bg-white p-6 rounded shadow-lg text-center">
