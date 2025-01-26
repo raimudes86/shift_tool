@@ -19,7 +19,7 @@ const LineShareButton = ({ text }) => {
         cursor: "pointer",
       }}
     >
-      LINEで共有
+      LINEで送信
     </button>
   );
 };
