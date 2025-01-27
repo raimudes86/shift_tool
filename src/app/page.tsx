@@ -1,6 +1,7 @@
 "use client";
 import { useState, useEffect } from 'react';
 import LineShareButton from './components/LineShareButton';
+import React from 'react';
 
 const startTimeOptions = ['10', '17', '11', '18', '18.5','9','10.5','11.5','19'];
 const endTimeOptions = ['15', 'L', '14', '14.5','17','19'];
@@ -30,7 +31,6 @@ const ShiftPage = () => {
     }
   }
   const [year, setYear] = useState(String(todays_year));
-  console.log(next_month);
   const [month, setMonth] = useState(String(next_month));
   const [half, setHalf] = useState(next_half);
   const [days, setDays] = useState<{date: string, youbi: string}[]>([]);
@@ -268,6 +268,19 @@ const ShiftPage = () => {
           </tbody>
         </table>
       
+        {/* プレビュー機能 */}
+        <label className="flex mx-auto mt-2">プレビュー</label>
+        <div className="border-2 border-balck p-5 w-90 h-300 flex items-center justify-center mx-auto">
+          <p>
+            {generateCopyText().split("\n").map((line, index) => (
+              <React.Fragment key={index}>
+                {line}
+                <br />
+              </React.Fragment>
+            ))}
+          </p>
+        </div>
+
         {/* コピー機能 */}
         <div className="p-5 flex flex-row items-center justify-center xpace-x-8 mt-2">
           <button
@@ -290,6 +303,7 @@ const ShiftPage = () => {
             </div>
           )}
         </div>
+
       </div>
     </div>
   );
