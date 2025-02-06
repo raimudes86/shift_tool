@@ -8,13 +8,12 @@ export default function FloatingUpButton() {
   useEffect(() => {
     const handleScroll = () => {
       const scrollPosition = window.scrollY;
-      const scrollThresholdup = 300;
-      const scrollThresholddown = document.body.scrollHeight - 300;
-      setIsVisible(scrollPosition > scrollThresholdup && scrollPosition < scrollThresholddown );
+      const scrollThreshold = 300;
+      setIsVisible(scrollPosition > scrollThreshold );
     };
 
     window.addEventListener("scroll", handleScroll);
-    handleScroll(); // ✅ 初回実行で現在のスクロール位置を反映
+    handleScroll(); 
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
@@ -22,9 +21,9 @@ export default function FloatingUpButton() {
     <button
       className="fixed bottom-20 right-5 bg-blue-500 text-white rounded-full shadow-lg w-14 h-14 text-2xl flex justify-center items-center hover:scale-110 transition-all"
       style={{
-        opacity: isVisible ? 0.8 : 0, // ✅ フェードイン・フェードアウト
-        transition: "opacity 0.3s ease-in-out", // ✅ スムーズなアニメーション
-        pointerEvents: isVisible ? "auto" : "none", // ✅ 透明時はクリック不可
+        opacity: isVisible ? 0.8 : 0, // フェードイン・フェードアウト
+        transition: "opacity 0.3s ease-in-out", // スムーズなアニメーション
+        pointerEvents: isVisible ? "auto" : "none", // 透明時はクリック不可
       }}
       onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
     >
