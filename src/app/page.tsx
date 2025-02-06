@@ -2,6 +2,9 @@
 import { useState, useEffect } from 'react';
 import LineShareButton from './components/LineShareButton';
 import React from 'react';
+import FloatingDownButton from './components/FloatingDownButton'
+import FloatingUpButton from './components/FloatingUpButton'
+
 
 const startTimeOptions = ['10', '17', '11', '18', '18.5','9','10.5','11.5','19'];
 const endTimeOptions = ['15', 'L', '14', '14.5','17','19'];
@@ -120,6 +123,8 @@ const ShiftPage = () => {
   return (
     <div className="px-0.5 pt-5 bg-gray-50 min-h-screen mx-auto">
       <h1 className="text-3xl font-extrabold mb-6 text-center">「青山がらり」<p>シフトコピーツール</p></h1>
+      <FloatingDownButton />
+      <FloatingUpButton />
 
       {/* 年度、月、前半・後半の選択 */}
       <div className="flex space-x-4 mb-8 justify-center">
